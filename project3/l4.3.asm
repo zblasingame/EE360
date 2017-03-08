@@ -8,6 +8,8 @@
 ;* Freescale CodeWarrior for the HC12 Program directory          *
 ;*****************************************************************
 
+; Authors: Z. Blasingame, D. Glass, J. DeMeyers
+
 ; export symbols
             XDEF Entry, _Startup            ; export 'Entry' symbol
             ABSENTRY Entry        ; for absolute assembly: mark this as application entry point
