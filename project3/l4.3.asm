@@ -68,7 +68,7 @@ loopi:
 			stx		time_count		; time_count++
 			; delay magic number accounts for time to complete
 			; inner loop thus a delay of 500ms
-			cpx		#200			; if (x < 1000) continue
+			cpx		#125			; if (x < 1000) continue
 			blt		loop_time
 			
 			; update offset
