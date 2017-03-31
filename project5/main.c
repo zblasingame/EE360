@@ -104,7 +104,6 @@ void interrupt 7 RTI_ISR() {
 	}
 	
 	if (time >= 3599 && enable == 1) {
-		// state = 2; // automatically stop
 		update_state(); // automatically stop
 	}
 	
