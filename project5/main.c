@@ -15,7 +15,6 @@ int digit_index;
 char time_arr[4] = {0x3F, 0x3F, 0x3F, 0x3F}; // format MM:SS
 
 
-
 void format_time(int time) {
 	int minutes;
 	int seconds;
@@ -87,6 +86,11 @@ void interrupt 7 RTI_ISR() {
 	
 	PORTB	= time_arr[digit_index];
 	PTP		= digit[digit_index];
+	
+	// add colon between MM and SS
+	if (digit_index == 1 || digit_index == 2) {
+		PORTB += 0x80;
+	}
 	
 	if (++digit_index >= 4) {
 		digit_index = 0;
