@@ -23,15 +23,6 @@ int pat_index;
 char digit[4] = {0xFE, 0xFD, 0xFB, 0xF7};
 int digit_index;
 
-// buzzer data (time in us, period in us)
-// long tone_map[4][2] = 
-// {
-	// {250000, 675},  	// 1480 Hz	F#6
-	// {1000000, 803}, 	// 1245 Hz	D#6
-	// {1500000, 903}, 	// 1108 Hz	C#6
-	// {2000000, 1802}		// 555 Hz	C#5
-// };
-
 // duration (periods), time_on (periods), time_off (periods)
 int tone_map[4][3] = 
 {
@@ -52,6 +43,11 @@ int num_periods;
 int loop_count;
 int loop_num;
 int enable_siren;
+
+// debouncing code
+int is_debouncing;
+int debounce_count;
+
 
 void main(void) {
 	// init variables
@@ -141,17 +137,26 @@ void interrupt 7 RTI_ISR() {
 			}
 		}
 	}
+	
+	// debounce code
+	if (is_debouncing == 1) {
+		// delay 128 ms
+		if (++debounce_count >= 1000) {
+			PIFH = PIFH_PIFH0_MASK;
+			is_debouncing = 0;
+			
+			time = 0;
+			PTT = 0xFF;
+			tone_index = 0;
+			loop_count = 0;
+
+			state = !state;
+			enable_siren = !state;
+		}
+	}
 }
 
 // Key interrupt handler
 void interrupt 25 KEY_HANDLER() {
-	PIFH = PIFH_PIFH0_MASK;
-	
-	time = 0;
-	PTT = 0xFF;
-	tone_index = 0;
-	loop_count = 0;
-	
-	state = !state;
-	enable_siren = !state;
+	is_debouncing = 1;
 }
