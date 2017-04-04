@@ -103,10 +103,7 @@ void interrupt 7 RTI_ISR() {
 				pat_index = 0;
 			}
 		}
-	}
-	
-	
-	if (state == 0 && enable_siren == 1) {
+	} else if (enable_siren == 1) {
 		
 		time_max = tone_map[tone_index][0];
 		
